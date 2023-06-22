@@ -24,7 +24,7 @@ for i in today:
 def get_calories():
     warning.place(x=50, y=20)
     info.delete(0, END)
-    info.place(x=350, y=130, anchor='n')
+    info.place(x=400, y=170, anchor='n')
     product = productField.get()
     try:
         weight = float(weightField.get())/100
@@ -41,8 +41,8 @@ def get_calories():
             elif product in row[0].lower():
                 results.append(f'{row[0]}: белки: {round(float(row[1])*weight)} г, жиры: {round(float(row[2])*weight)} г, углеводы: {round(float(row[3])*weight)} г, ккал: {round(float(row[4])*weight)}')
                 temp_results.append([row[0], round(float(row[1])*weight, 2), round(float(row[2])*weight, 2), round(float(row[3])*weight, 2), round(float(row[4])*weight, 2)])
-    for i in results:
-        info.insert(END, i)
+    for res in results:
+        info.insert(END, res)
     if temp_results:
         get.config(state=NORMAL)
     else:
@@ -71,13 +71,13 @@ def get_product():
                     todays_statistics = Label(frame,
                                               text=f'Сегодня:\n Белки: {protein}\nЖиры: {fat}\nУглеводы: {carb}\nКкал: {ccal}',
                                               bg='pink')
-                    todays_statistics.place(x=500, y=5)
+                    todays_statistics.place(x=550, y=5)
     except:
         print('Выберете продукт для добавления')
 
 def get_menu():
     get.config(state=DISABLED)
-    info.place(x=350, y=130, anchor='n')
+    info.place(x=400, y=170, anchor='n')
     info.delete(0, END)
     for i in today:
         text = f'{i[0]}: белки: {i[1]}, жиры: {i[2]}, углеводы: {i[3]}, ккал: {i[4]}.'
@@ -85,11 +85,11 @@ def get_menu():
 
 
 window.title('Calorizator')
-window.geometry('700x300')
+window.geometry('800x400')
 
 window.resizable(width=False, height=False)
 
-canvas = Canvas(window, height=300, width=700)
+canvas = Canvas(window, height=400, width=800)
 canvas.pack()
 
 frame = Frame(window, bg='pink')
@@ -99,7 +99,7 @@ weightField = Entry(frame, bg='white')
 productText = Label(frame, text='Введите название продукта', bg='pink')
 weightText = Label(frame, text='Введите вес продукта в граммах', bg='pink')
 btn = Button(frame, text='Рассчитать', bg='yellow', command=get_calories)
-info = Listbox(frame, bg='pink', selectmode=SINGLE, width=110, height=10)
+info = Listbox(frame, bg='pink', selectmode=SINGLE, width=95, height=10)
 get = Button(frame, text='Добавить в нажранное', command=get_product, state=DISABLED)
 get_menu = Button(frame, text='Нажрато за сегодня', command=get_menu)
 todays_statistics = Label(frame, text=f'Сегодня:\n Белки: {protein}\nЖиры: {fat}\nУглеводы: {carb}\nКкал: {ccal}', bg='pink')
@@ -109,10 +109,9 @@ productText.pack()
 productField.pack()
 weightText.pack()
 weightField.pack()
-todays_statistics.place(x=500, y=5)
-btn.place(x=210, y=120, anchor='s')
-get.place(x=320, y=120, anchor='s')
-get_menu.place(x=455, y=120, anchor='s')
-
+todays_statistics.place(x=550, y=5)
+btn.place(x=227, y=150, anchor='s')
+get.place(x=350, y=150, anchor='s')
+get_menu.place(x=500, y=150, anchor='s')
 
 window.mainloop()
