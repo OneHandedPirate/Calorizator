@@ -16,6 +16,7 @@ def prd():
         products_list.append([name, protein, fat, carbs, ccal])
         products_all.append([name, protein, fat, carbs, ccal])
 
+
 URL = 'https://calorizator.ru/product'
 headers = {
         'Accept': '*/*',
@@ -35,16 +36,10 @@ for gcat in categories[:-1]:
         category_url = cat.find('a').get('href')
         categories_dict.update({f'{category_text}': 'https://calorizator.ru/' + category_url})
 
-with open('all_categories.json', 'w') as file:
-    json.dump(categories_dict, file, indent=4, ensure_ascii=False)
-
-with open('all_categories.json') as file:
-    all_categories = json.load(file)
-
 count = 0
 shrums = {"Colbasi": "https://calorizator.ru/product/sausage"}
 products_all = []
-for cat_name, cat_href in all_categories.items():
+for cat_name, cat_href in categories_dict.items():
     category_scr = requests.get(cat_href, headers=headers).text
     bscat = BeautifulSoup(category_scr, 'lxml')
     pages = bscat.find(class_='pager')
@@ -58,16 +53,11 @@ for cat_name, cat_href in all_categories.items():
     else:
         prd()
     count += 1
-    with open (f'data/{count} {cat_name}.csv', 'w', encoding='utf-8-sig', newline='') as csvtab:
-        writer = csv.writer(csvtab, delimiter=',', dialect='excel')
-        writer.writerow(['Продукт', 'Белки', 'Жиры', 'Углеводы', 'Калорийность'])
-        for prod in products_list:
-            writer.writerow(prod)
 
-    print(f'Осталось спарсить {len(all_categories)-count} категорий')
+    print(f'Осталось спарсить {len(categories_dict)-count} категорий')
     sleep(random.choice(range(2, 5)))
 
-with open (f'data/products_all.csv', 'w', encoding='utf-8-sig', newline='') as csvtab:
+with open(f'data/products_all.csv', 'w', encoding='utf-8-sig', newline='') as csvtab:
     writer = csv.writer(csvtab, delimiter=',', dialect='excel')
     writer.writerow(['Продукт', 'Белки', 'Жиры', 'Углеводы', 'Калорийность'])
     for prod in products_all:
